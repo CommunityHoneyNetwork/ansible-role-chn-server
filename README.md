@@ -1,6 +1,6 @@
 # ansible-role-chn-server
 
-[![Build Status](https://stingar-ci-master.oit.duke.edu/buildStatus/icon?job=CommunityHoneyNetwork/ansible-role-chn-server/master)](https://stingar-ci-master.oit.duke.edu/job/CommunityHoneyNetwork/job/ansible-role-chn-server/job/master/)
+[![pipeline status](https://gitlab.oit.duke.edu/stingar/ansible-role-chn-server/badges/master/pipeline.svg)](https://gitlab.oit.duke.edu/stingar/ansible-role-chn-server/commits/master)
 
 ## Overview
 
