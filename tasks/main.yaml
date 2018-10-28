@@ -1,0 +1,108 @@
+---
+
+- name: Update apt cache
+  apt:
+    update_cache: true
+    cache_valid_time: 86400
+  when: ansible_os_family == 'Debian'
+
+- name: Gather | os info
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}.yaml"
+  tags: vars
+
+- name: CHN Server storage
+  file:
+    path: "{{ chn_server_storage_path }}"
+    state: directory
+
+- name: Install system level packages
+  package:
+    name: "{{ item }}"
+  with_items: "{{ global_packages + os_packages }}"
+
+- name: Install python modules
+  pip:
+    name: docker
+
+- name: Deploy MongoDB Container
+  docker_container:
+    name: mongodb
+    image: stingar/mongodb:{{ chn_version_tag }}
+    state: started
+    pull: true
+    restart_policy: always
+    volumes:
+      - /var/lib/mongo
+  tags:
+    - docker
+
+- name: Deploy Redis Container
+  docker_container:
+    name: redis
+    image: stingar/redis:{{ chn_version_tag }}
+    state: started
+    pull: true
+    restart_policy: always
+    volumes:
+      - /var/lib/redis
+  tags:
+    - docker
+
+- name: Deploy HPFeeds Container
+  docker_container:
+    name: hpfeeds
+    image: stingar/hpfeeds:{{ chn_version_tag }}
+    state: started
+    pull: true
+    restart_policy: always
+    links:
+      - "mongodb:mongodb"
+    ports:
+      - "10000:10000"
+  tags:
+    - docker
+
+- name: Deploy Mnemosyne Container
+  docker_container:
+    name: mnemosyne
+    image: stingar/mnemosyne:{{ chn_version_tag }}
+    state: started
+    pull: true
+    restart_policy: always
+    links:
+      - "mongodb:mongodb"
+      - "hpfeeds:hpfeeds"
+  tags:
+    - docker
+
+- name: Deploy CHN Container
+  docker_container:
+    name: chnserver
+    image: stingar/chn-server:{{ chn_version_tag }}
+    state: started
+    pull: true
+    restart_policy: always
+    links:
+      - "mongodb:mongodb"
+      - "hpfeeds:hpfeeds"
+      - "redis:redis"
+    volumes:
+      - /etc/collector
+      - /opt/sqlite
+      - "{{ chn_server_storage_path}}/chn_logs:/var/log"
+      - "{{ chn_server_storage_path }}/chn_password_reset.py:/opt/chn_password_reset.py"
+    ports:
+      - '80:80'
+  tags:
+    - docker
+
+- name: Set Admin Pass
+  # yamllint disable-line rule:line-length
+  shell: "docker exec -t chnserver /opt/chnctl.py -u '{{ chn_admin_username }}' -p '{{ chn_admin_password }}' && touch {{ chn_server_storage_path }}/admin_pw_set"
+  args:
+    creates: "{{ chn_server_storage_path }}/admin_pw_set"
+  when: chn_admin_password is defined
+  tags:
+    - chn_server_admin_pw

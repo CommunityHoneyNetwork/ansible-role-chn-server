@@ -1,0 +1,5 @@
+---
+
+chn_admin_username: 'admin@localhost'
+chn_server_storage_path: "/srv/chn_server"
+global_packages: []
