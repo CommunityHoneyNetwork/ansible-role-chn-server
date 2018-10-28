@@ -1,2 +1,10 @@
 ---
-include: 'https://gitlab.oit.duke.edu/devil-ops/gitlab-utilities/raw/master/ci/molecule.yaml'
+molecule:
+  stage: test
+  tags:
+    - molecule-vagrant
+  before_script:
+    - whoami
+    - hostname
+  script:
+    - sudo /bin/molecule test
