@@ -1,0 +1,2 @@
+---
+include: 'https://gitlab.oit.duke.edu/devil-ops/gitlab-utilities/raw/master/ci/molecule.yaml'
