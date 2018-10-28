@@ -21,10 +21,14 @@
   package:
     name: "{{ item }}"
   with_items: "{{ global_packages + os_packages }}"
+  notify: restart docker
 
 - name: Install python modules
   pip:
     name: docker
+
+- name: Flush Handlers to get docker restarted
+  meta: flush_handlers
 
 - name: Deploy MongoDB Container
   docker_container:
