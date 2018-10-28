@@ -2,4 +2,3 @@
 
 os_packages:
   - python3-pip
-  - docker.io

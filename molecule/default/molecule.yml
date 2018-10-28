@@ -53,3 +53,18 @@ platforms:
     memory: 1024
     instance_raw_config_args:
       - "vm.network 'forwarded_port', guest: 80, host: 8016"
+scenario:
+  name: default
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    # TODO: Get this back in once geerlingguy.docker is idempotent
+    # - idempotence
+    - side_effect
+    - verify
+    - destroy

@@ -21,7 +21,6 @@
   package:
     name: "{{ item }}"
   with_items: "{{ global_packages + os_packages }}"
-  notify: restart docker
 
 - name: Install python modules
   pip:
