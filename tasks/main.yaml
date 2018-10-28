@@ -110,3 +110,4 @@
   when: chn_admin_password is defined
   tags:
     - chn_server_admin_pw
+  notify: Print CHN Credentials
