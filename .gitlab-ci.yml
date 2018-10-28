@@ -7,4 +7,4 @@ molecule:
     - whoami
     - hostname
   script:
-    - sudo /bin/molecule test
+    - sudo PYTHONDONTWRITEBYTECODE=true /bin/molecule test
