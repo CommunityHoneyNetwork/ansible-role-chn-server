@@ -6,7 +6,7 @@ molecule:
   before_script:
     - whoami
     - hostname
-  environment:
-    PYTHONDONTWRITEBYTECODE: true
+# environment:
+#   PYTHONDONTWRITEBYTECODE: true
   script:
     - sudo /bin/molecule test
