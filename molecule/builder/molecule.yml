@@ -1,0 +1,72 @@
+---
+dependency:
+  name: gilt
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+  options:
+    config-file: './.yamllint'
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      all:
+        bundle_chn: true
+    host_vars:
+      chn-server-builder-ubuntu18:
+        ansible_python_interpreter: "/usr/bin/python3"
+        chn_build_images: true
+      chn-server-builder-ubuntu16:
+        ansible_python_interpreter: "/usr/bin/python3"
+        chn_build_images: true
+  lint:
+    name: ansible-lint
+    options:
+      exclude:
+        - molecule/roles/
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
+
+platforms:
+  - name: chn-server-builder-ubuntu18
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    config_options:
+      synced_folder: True
+    box: ubuntu/bionic64
+    memory: 1024
+    instance_raw_config_args:
+      - "vm.network 'forwarded_port', guest: 80, host: 8018"
+  - name: chn-server-builder-ubuntu16
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    config_options:
+      synced_folder: True
+    box: ubuntu/xenial64
+    memory: 1024
+    instance_raw_config_args:
+      - "vm.network 'forwarded_port', guest: 80, host: 8016"
+scenario:
+  name: builder
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    # TODO: Get this back in once geerlingguy.docker is idempotent
+    # - idempotence
+    - side_effect
+    - verify
+    - destroy

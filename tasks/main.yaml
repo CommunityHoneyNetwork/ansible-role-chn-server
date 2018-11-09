@@ -31,13 +31,18 @@
 
 - name: Pull in images
   docker_image:
-    name: "{{ item }}"
+    name: "stingar/{{ item }}:{{ chn_version_tag }}"
   with_items:
-    - "stingar/mongodb:{{ chn_version_tag }}"
-    - "stingar/redis:{{ chn_version_tag }}"
-    - "stingar/hpfeeds:{{ chn_version_tag }}"
-    - "stingar/mnemosyne:{{ chn_version_tag }}"
-    - "stingar/chn-server:{{ chn_version_tag }}"
+    - "mongodb"
+    - "redis"
+    - "hpfeeds"
+    - "mnemosyne"
+    - "chn-server"
+  when: not chn_build_images
+
+- name: Build Images
+  include_tasks: build_images.yaml
+  when: chn_build_images
 
 - name: Deploy MongoDB Container
   docker_container:
@@ -115,3 +120,4 @@
   tags:
     - chn_server_admin_pw
   notify: Print CHN Credentials
+  ignore_errors: true
