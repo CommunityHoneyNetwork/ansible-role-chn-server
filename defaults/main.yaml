@@ -6,3 +6,7 @@ chn_server: 'http://chnserver'
 chn_admin_password: "{{ lookup('password', '/dev/null length=32 chars=hexdigits') }}"
 chn_version_tag: 'latest'
 chn_build_images: false
+
+chn_credentials_cache: "/root/.chn_server_ansible_creds.ini"
+# Don't use a cache in production
+# chn_credentials_cache: false

@@ -39,22 +39,22 @@ platforms:
         network_name: private_network
         type: dhcp
     config_options:
-      synced_folder: True
+      synced_folder: true
     box: ubuntu/bionic64
     memory: 1024
     instance_raw_config_args:
-      - "vm.network 'forwarded_port', guest: 80, host: 8018"
+      - "vm.network 'forwarded_port', guest: 80, host: 9018"
   - name: chn-server-builder-ubuntu16
     interfaces:
       - auto_config: true
         network_name: private_network
         type: dhcp
     config_options:
-      synced_folder: True
+      synced_folder: true
     box: ubuntu/xenial64
     memory: 1024
     instance_raw_config_args:
-      - "vm.network 'forwarded_port', guest: 80, host: 8016"
+      - "vm.network 'forwarded_port', guest: 80, host: 9016"
 scenario:
   name: builder
   test_sequence:

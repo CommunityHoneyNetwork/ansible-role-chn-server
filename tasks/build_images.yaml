@@ -6,10 +6,6 @@
     dest: "{{ chn_server_storage_path }}/{{ item }}"
     update: true
   with_items:
-    - "mongodb"
-    - "redis"
-    - "hpfeeds"
-    - "mnemosyne"
     - "chn-server"
 
 - name: Build docker images
@@ -17,19 +13,5 @@
     dockerfile: Dockerfile-ubuntu
     name: "stingar/{{ item }}:latest"
     path: "{{ chn_server_storage_path }}/{{ item }}"
-  with_items:
-    - "mongodb"
-    - "redis"
-    - "hpfeeds"
-    - "mnemosyne"
+  loop:
     - "chn-server"
-
-#- name: Pull in images
-# docker_image:
-#   name: "stingar/{{ item }}:{{ chn_version_tag }}"
-# with_items:
-#   - "mongodb"
-#   - "redis"
-#   - "hpfeeds"
-#   - "mnemosyne"
-#   - "chn-server"
