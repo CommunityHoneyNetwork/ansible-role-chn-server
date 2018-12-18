@@ -121,45 +121,8 @@
     - docker
 
 - name: Init the database (or at least try)
-  # yamllint disable-line rule:line-length
   shell: "docker exec -t chnserver python /opt/initdatabase.py"
   args:
     creates: "{{ chn_server_storage_path }}/db_init_set"
     chdir: "/opt"
   ignore_errors: true
-
-- name: Stat file for admin_pw lock
-  stat:
-    path: "{{ chn_server_storage_path }}/admin_pw_set"
-  register: admin_pw_stat
-
-- name: Pause if we don't have a password yet
-  pause:
-    minutes: 1
-  when:
-    - chn_admin_password is defined
-    - not admin_pw_stat.stat.exists
-
-- name: Set Admin Pass
-  # yamllint disable-line rule:line-length
-  shell: "docker exec -t chnserver /opt/chnctl.py -u '{{ chn_admin_username }}' -p '{{ chn_admin_password }}' && touch {{ chn_server_storage_path }}/admin_pw_set"
-  when:
-    - chn_admin_password is defined
-    - not admin_pw_stat.stat.exists
-  tags:
-    - chn_server_admin_pw
-  notify: Print CHN Credentials
-  ignore_errors: true
-
-- name: Cache admin password
-  ini_file:
-    path: "{{ chn_credentials_cache | expanduser }}"
-    section: 'default'
-    option: 'admin_password'
-    value: "{{ chn_admin_password }}"
-  tags:
-    - chn_server_admin_pw
-  when:
-    - chn_credentials_cache != False
-    - chn_admin_password is defined
-    - not admin_pw_stat.stat.exists
