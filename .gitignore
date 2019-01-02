@@ -1,2 +1,3 @@
 molecule/default/roles
+molecule/hpfeeds/roles
 molecule/builder/roles

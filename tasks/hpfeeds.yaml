@@ -1,0 +1,35 @@
+---
+
+- name: Pull in HPFeeds Images
+  docker_image:
+    name: "stingar/{{ item }}:{{ chn_version_tag }}"
+  with_items:
+    - "hpfeeds-cif"
+    - "hpfeeds-logger"
+    - "hpfeeds"
+    - "mnemosyne"
+    - "chn-server"
+
+- name: Deploy HPFeeds-CIF Container
+  docker_container:
+    name: hpfeeds-cif
+    image: stingar/hpfeeds-cif
+    state: started
+    restart_policy: always
+    links:
+      - "mongodb:mongodb"
+      - "hpfeeds:hpfeeds"
+  tags:
+    - docker
+
+- name: Deploy HPFeeds-Logger Container
+  docker_container:
+    name: hpfeeds-logger
+    image: stingar/hpfeeds-logger
+    state: started
+    restart_policy: always
+    links:
+      - "mongodb:mongodb"
+      - "hpfeeds:hpfeeds"
+  tags:
+    - docker

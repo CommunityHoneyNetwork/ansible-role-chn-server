@@ -126,3 +126,7 @@
     creates: "{{ chn_server_storage_path }}/db_init_set"
     chdir: "/opt"
   ignore_errors: true
+
+- name: Include hpfeeds-cif
+  include_tasks: hpfeeds_cif.yaml
+  when: cif_host

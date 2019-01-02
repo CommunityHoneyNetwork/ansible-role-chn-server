@@ -2,4 +2,5 @@
 
 chn_admin_username: 'admin@localhost'
 chn_server_storage_path: "/srv/chn_server"
+cif_host: false
 global_packages: []
