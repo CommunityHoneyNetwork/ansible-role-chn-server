@@ -26,6 +26,16 @@
   pip:
     name: docker
 
+- name: Enable docker
+  service:
+    name: docker
+    enabled: true
+    state: started
+
+- name: Install python modules
+  pip:
+    name: docker
+
 - name: Flush Handlers to get docker restarted
   meta: flush_handlers
 
