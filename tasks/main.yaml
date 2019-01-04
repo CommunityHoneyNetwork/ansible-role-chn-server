@@ -16,6 +16,10 @@
   file:
     path: "{{ chn_server_storage_path }}"
     state: directory
+  with_items:
+    - "{{ chn_server_storage_path }}"
+    - "{{ chn_server_storage_path }}/collector"
+    - "{{ chn_server_storage_path }}/database"
 
 - name: Install system level packages
   package:
@@ -126,8 +130,8 @@
       - "hpfeeds:hpfeeds"
       - "redis:redis"
     volumes:
-      - /etc/collector
-      - /opt/sqlite
+      - "{{ chn_server_storage_path}}/collector:/etc/collector"
+      - "{{ chn_server_storage_path}}/database:/opt/sqlite"
       - "{{ chn_server_storage_path}}/chn_logs:/var/log"
       - "{{ chn_server_storage_path }}/chn_password_reset.py:/opt/chn_password_reset.py"
     ports:
