@@ -140,7 +140,7 @@
     - docker
 
 - name: Init the database (or at least try)
-  shell: "docker exec -t chnserver python /opt/initdatabase.py"
+  shell: "docker exec -t chnserver bash -c 'cd /opt && python /opt/initdatabase.py'"
   args:
     creates: "{{ chn_server_storage_path }}/db_init_set"
     chdir: "/opt"
