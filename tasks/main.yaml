@@ -110,6 +110,11 @@
   tags:
     - docker
 
+- name: Copy in password changer
+  copy:
+    src: chn_password_reset.py
+    dest: "{{ chn_server_storage_path }}/chn_password_reset.py"
+
 - name: Deploy CHN Container
   docker_container:
     name: chnserver
