@@ -136,6 +136,7 @@
       - "{{ chn_server_storage_path }}/chn_password_reset.py:/opt/chn_password_reset.py"
     ports:
       - '80:80'
+      - '443:443'
   tags:
     - docker
 
