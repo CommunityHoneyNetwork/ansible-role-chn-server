@@ -140,7 +140,7 @@
       - "{{ chn_server_storage_path }}/database:/opt/sqlite"
       - "{{ chn_server_storage_path }}/chn_logs:/var/log"
       - "{{ chn_server_storage_path }}/chn_password_reset.py:/opt/chn_password_reset.py"
-      - "{{ chn_server_storage_path }}/certs:/certs"
+      - "{{ chn_server_storage_path }}/certs:/tls"
     ports:
       - '80:80'
       - '443:443'
