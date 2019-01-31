@@ -20,6 +20,7 @@
     - "{{ chn_server_storage_path }}"
     - "{{ chn_server_storage_path }}/collector"
     - "{{ chn_server_storage_path }}/database"
+    - "{{ chn_server_storage_path }}/certs"
 
 - name: Install system level packages
   package:
@@ -128,15 +129,18 @@
     image: stingar/chn-server:{{ chn_version_tag }}
     state: started
     restart_policy: always
+    environment:
+      CERTIFICATE_STRATEGY: "{{ chn_certificate_strategy }}"
     links:
       - "mongodb:mongodb"
       - "hpfeeds:hpfeeds"
       - "redis:redis"
     volumes:
-      - "{{ chn_server_storage_path}}/collector:/etc/collector"
-      - "{{ chn_server_storage_path}}/database:/opt/sqlite"
-      - "{{ chn_server_storage_path}}/chn_logs:/var/log"
+      - "{{ chn_server_storage_path }}/collector:/etc/collector"
+      - "{{ chn_server_storage_path }}/database:/opt/sqlite"
+      - "{{ chn_server_storage_path }}/chn_logs:/var/log"
       - "{{ chn_server_storage_path }}/chn_password_reset.py:/opt/chn_password_reset.py"
+      - "{{ chn_server_storage_path }}/certs:/certs"
     ports:
       - '80:80'
       - '443:443'
