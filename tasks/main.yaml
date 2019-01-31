@@ -129,7 +129,7 @@
     image: stingar/chn-server:{{ chn_version_tag }}
     state: started
     restart_policy: always
-    environment:
+    env:
       CERTIFICATE_STRATEGY: "{{ chn_certificate_strategy }}"
     links:
       - "mongodb:mongodb"
