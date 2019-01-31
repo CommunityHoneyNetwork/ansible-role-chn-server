@@ -25,6 +25,9 @@
   package:
     name: "{{ item }}"
   with_items: "{{ global_packages + os_packages }}"
+  register: pkg_res
+  retries: 5
+  until: pkg_res | success
 
 - name: Install python modules
   pip:
