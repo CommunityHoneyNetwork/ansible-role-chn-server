@@ -20,7 +20,7 @@
     - "{{ chn_server_storage_path }}"
     - "{{ chn_server_storage_path }}/collector"
     - "{{ chn_server_storage_path }}/database"
-    - "{{ chn_server_storage_path }}/certs"
+    - "{{ chn_server_storage_path }}/tls"
 
 - name: Install system level packages
   package:
