@@ -28,6 +28,7 @@
   with_items: "{{ global_packages + os_packages }}"
   register: pkg_res
   retries: 5
+  delay: 30
   until: pkg_res is success
 
 - name: Install python modules
